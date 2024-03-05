@@ -1,14 +1,20 @@
 export const paths = {
-  // public
+  // public / landing
   home: {
     label: `Home`,
     path: () => `/`,
   },
-  // protected
-  dashboard: {
-    label: `Dashboard`,
-    path: () => `/dashboard`,
-  },
+  // protected / app
+  app: [
+    {
+      label: `Dashboard`,
+      path: () => `/dashboard`,
+    },
+    {
+      label: `Account`,
+      path: () => `/account`,
+    },
+  ],
   // auth
   signup: {
     label: `Sign up`,
