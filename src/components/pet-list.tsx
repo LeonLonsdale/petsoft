@@ -7,8 +7,6 @@ import Image from 'next/image';
 const PetList = () => {
   const { pets, selectedPetId, handleSelectPet } = usePetContext();
 
-  console.log('Test', selectedPetId);
-
   const petListItems = pets.map((pet) => (
     <li key={pet.id}>
       <button
