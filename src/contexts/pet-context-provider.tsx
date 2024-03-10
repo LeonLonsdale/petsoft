@@ -6,6 +6,8 @@ import { createContext, useContext, useState } from 'react';
 type TPetContext = {
   pets: Pet[];
   selectedPetId: string | null;
+  handleSelectPet: (id: string) => void;
+  handleAddPet: (pet: Pet) => void;
 };
 
 type TPetContextProviderProps = {
@@ -17,10 +19,16 @@ const PetContext = createContext<TPetContext | null>(null);
 
 const PetContextProvider = ({ children, data }: TPetContextProviderProps) => {
   const [pets, setPets] = useState(data);
-  const [selectedPetId, setSelectedPetId] = useState(null);
+  const [selectedPetId, setSelectedPetId] = useState<string | null>(null);
+
+  const handleSelectPet = (id: string) => setSelectedPetId(id);
+
+  const handleAddPet = (pet: Pet) => setPets((prev) => [...prev, pet]);
 
   return (
-    <PetContext.Provider value={{ pets, selectedPetId }}>
+    <PetContext.Provider
+      value={{ pets, selectedPetId, handleSelectPet, handleAddPet }}
+    >
       {children}
     </PetContext.Provider>
   );
@@ -30,7 +38,7 @@ const usePetContext = () => {
   const value = useContext(PetContext);
   if (!value)
     throw new Error(
-      'You have used PetContext outside of Provider. The context can only be used within a child of the PetContextProvider',
+      'You have used PetContext outside of its Provider. PetContext can only be used within a child of the PetContextProvider',
     );
   return value;
 };
