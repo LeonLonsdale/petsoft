@@ -1,28 +1,37 @@
-import Branding from "@/components/branding";
-import ContentBlock from "@/components/content-block";
-import PetDetails from "@/components/pet-details";
-import PetList from "@/components/pet-list";
-import SearchForm from "@/components/search-form";
-import Stats from "@/components/stats";
+import Branding from '@/components/branding';
+import ContentBlock from '@/components/content-block';
+import PetDetails from '@/components/pet-details';
+import PetList from '@/components/pet-list';
+import SearchForm from '@/components/search-form';
+import Stats from '@/components/stats';
 
-const Page = () => {
+const Page = async () => {
+  // get pet data
+  const response = await fetch(
+    'https://bytegrad.com/course-assets/projects/petsoft/api/pets',
+  );
+  if (!response.ok) {
+    throw new Error('Could not load pet information');
+  }
+  const data = await response.json();
+
   return (
     <main>
-      <div className="flex justify-between items-center text-white py-8">
+      <div className='flex items-center justify-between py-8 text-white'>
         <Branding />
         <Stats />
       </div>
 
-      <div className="grid grid-rows-[45px_300px_500px] md:grid-cols-3 md:grid-rows-[45px_1fr] gap-4 md:h-[600px]">
-        <div className="md:row-start-1 md:row-span-1 md:col-start-1 md:col-span-1">
+      <div className='grid grid-rows-[45px_300px_500px] gap-4 md:h-[600px] md:grid-cols-3 md:grid-rows-[45px_1fr]'>
+        <div className='md:col-span-1 md:col-start-1 md:row-span-1 md:row-start-1'>
           <SearchForm />
         </div>
-        <div className="md:row-start-2 md:row-span-1 md:col-start-1 md:col-span-1">
+        <div className='md:col-span-1 md:col-start-1 md:row-span-1 md:row-start-2'>
           <ContentBlock>
-            <PetList />
+            <PetList pets={data} />
           </ContentBlock>
         </div>
-        <div className="md:row-start-1 md:row-span-full md:col-start-2 md:col-span-full">
+        <div className='md:col-span-full md:col-start-2 md:row-span-full md:row-start-1'>
           <ContentBlock>
             <PetDetails />
           </ContentBlock>
