@@ -1,11 +1,11 @@
-import { Pet } from '@/lib/types';
+'use client';
+
+import { usePetContext } from '@/contexts/pet-context-provider';
 import Image from 'next/image';
 
-type PetListProps = {
-  pets: Pet[];
-};
+const PetList = () => {
+  const { pets } = usePetContext();
 
-const PetList = ({ pets }: PetListProps) => {
   const petListItems = pets.map((pet) => (
     <li key={pet.id}>
       <button className='flex h-[70px] w-full cursor-pointer items-center gap-3 px-5 text-base transition hover:bg-[#EFF1F2] focus:bg-[#EFF1F2]'>

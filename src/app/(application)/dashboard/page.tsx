@@ -6,15 +6,6 @@ import SearchForm from '@/components/search-form';
 import Stats from '@/components/stats';
 
 const Page = async () => {
-  // get pet data
-  const response = await fetch(
-    'https://bytegrad.com/course-assets/projects/petsoft/api/pets',
-  );
-  if (!response.ok) {
-    throw new Error('Could not load pet information');
-  }
-  const data = await response.json();
-
   return (
     <main>
       <div className='flex items-center justify-between py-8 text-white'>
@@ -28,7 +19,7 @@ const Page = async () => {
         </div>
         <div className='md:col-span-1 md:col-start-1 md:row-span-1 md:row-start-2'>
           <ContentBlock>
-            <PetList pets={data} />
+            <PetList />
           </ContentBlock>
         </div>
         <div className='md:col-span-full md:col-start-2 md:row-span-full md:row-start-1'>
