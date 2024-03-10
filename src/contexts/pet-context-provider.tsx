@@ -34,3 +34,5 @@ const usePetContext = () => {
     );
   return value;
 };
+
+export { PetContextProvider, usePetContext };
