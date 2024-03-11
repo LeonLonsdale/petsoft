@@ -28,7 +28,7 @@ type PetDetailsPartProps = {
 
 const TopBar = ({ pet }: PetDetailsPartProps) => {
   return (
-    <div className='flex items-center border-b border-black/[0.08] bg-white px-8 py-5'>
+    <div className='border-light flex items-center border-b bg-white px-8 py-5'>
       <Image
         src={pet.imageUrl}
         alt=''
@@ -62,7 +62,7 @@ const PetInfo = ({ pet }: PetDetailsPartProps) => {
 
 const PetNotes = ({ pet }: PetDetailsPartProps) => {
   return (
-    <section className='mx-8 mb-9 flex-1 rounded-md border border-black/[0.08] bg-white px-7 py-5'>
+    <section className='border-light mx-8 mb-9 flex-1 rounded-md border bg-white px-7 py-5'>
       {pet?.notes}
     </section>
   );

@@ -31,7 +31,7 @@ const PetList = () => {
   ));
 
   return (
-    <section className='border-b border-black/[0.08] bg-white'>
+    <section className='border-light border-b bg-white'>
       <ul>{petListItems}</ul>
     </section>
   );
