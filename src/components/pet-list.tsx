@@ -1,13 +1,22 @@
 'use client';
 
 import { usePetContext } from '@/contexts/pet-context-provider';
+import { useSearchContext } from '@/contexts/search-context-provider';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
 const PetList = () => {
   const { pets, selectedPetId, handleSelectPet } = usePetContext();
+  const { searchText } = useSearchContext();
 
-  const petListItems = pets.map((pet) => (
+  // filter pets based on search text
+  const filteredPets = searchText
+    ? pets.filter((pet) =>
+        pet.name.toLowerCase().includes(searchText.toLowerCase()),
+      )
+    : pets || [];
+
+  const petListItems = filteredPets.map((pet) => (
     <li key={pet.id}>
       <button
         onClick={() => handleSelectPet(pet.id)}
@@ -31,7 +40,7 @@ const PetList = () => {
   ));
 
   return (
-    <section className='border-light border-b bg-white'>
+    <section className='border-b border-light bg-white'>
       <ul>{petListItems}</ul>
     </section>
   );

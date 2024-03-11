@@ -1,11 +1,19 @@
+'use client';
+
+import { useSearchContext } from '@/contexts/search-context-provider';
+
 const SearchForm = () => {
+  const { handleChangeSearchText, searchText } = useSearchContext();
+
   return (
-    <search className="w-full h-full">
-      <form className="w-full h-full">
+    <search className='h-full w-full'>
+      <form className='h-full w-full'>
         <input
-          className="w-full h-full bg-white/70 rounded-md px-2"
-          type="text"
-          placeholder="Search"
+          className='h-full w-full rounded-md bg-white/20 px-5 outline-none transition placeholder:text-white/50 hover:bg-white/30 focus:bg-white/50'
+          type='search'
+          placeholder='Search'
+          onChange={handleChangeSearchText}
+          value={searchText || ''}
         />
       </form>
     </search>
