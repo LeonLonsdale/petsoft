@@ -28,6 +28,7 @@ type PetDetailsPartProps = {
 };
 
 const TopBar = ({ pet }: PetDetailsPartProps) => {
+  const { handleCheckout } = usePetContext();
   return (
     <div className='flex items-center border-b border-light bg-white px-8 py-5'>
       <Image
@@ -41,7 +42,9 @@ const TopBar = ({ pet }: PetDetailsPartProps) => {
 
       <div className='ml-auto flex gap-2'>
         <PetButton actionType='edit'>Edit</PetButton>
-        <PetButton actionType='checkout'>Checkout</PetButton>
+        <PetButton actionType='checkout' onClick={() => handleCheckout(pet.id)}>
+          Checkout
+        </PetButton>
       </div>
     </div>
   );
