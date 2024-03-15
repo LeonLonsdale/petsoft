@@ -31,7 +31,7 @@ const PetContextProvider = ({ children, data }: TPetContextProviderProps) => {
 
   // handlers
   const handleSelectPet = (id: string) => setSelectedPetId(id);
-  const handleAddPet = (pet: Pet) => setPets((prev) => [...prev, pet]);
+  const handleAddPet = (newPet: Pet) => setPets((prev) => [...prev, newPet]);
   const handleCheckout = (petId: string) => {
     setPets((prev) => prev.filter((pet) => pet.id !== petId));
     setSelectedPetId(null);
