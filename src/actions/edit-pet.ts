@@ -23,5 +23,5 @@ export const editPet = async (petId: string, formData: FormData) => {
     };
   }
 
-  revalidatePath('/(application)/app', 'layout');
+  revalidatePath('/(application)', 'layout');
 };

@@ -4,6 +4,8 @@ import { usePetContext } from '@/contexts/pet-context-provider';
 import { Pet } from '@/lib/types';
 import Image from 'next/image';
 import PetButton from './pet-button';
+import * as actions from '@/actions';
+import { toast } from 'sonner';
 
 const PetDetails = () => {
   const { selectedPet } = usePetContext();
@@ -28,7 +30,7 @@ type PetDetailsPartProps = {
 };
 
 const TopBar = ({ pet }: PetDetailsPartProps) => {
-  const { handleCheckout } = usePetContext();
+  // const { handleCheckout } = usePetContext();
   return (
     <div className='flex items-center border-b border-light bg-white px-8 py-5'>
       <Image
@@ -42,7 +44,17 @@ const TopBar = ({ pet }: PetDetailsPartProps) => {
 
       <div className='ml-auto flex gap-2'>
         <PetButton actionType='edit'>Edit</PetButton>
-        <PetButton actionType='checkout' onClick={() => handleCheckout(pet.id)}>
+        <PetButton
+          actionType='checkout'
+          onClick={async () => {
+            const error = await actions.deletePet(pet.id);
+            if (error) {
+              toast.warning(error.message);
+              return;
+            }
+            toast.success('Pet removed successfully');
+          }}
+        >
           Checkout
         </PetButton>
       </div>
