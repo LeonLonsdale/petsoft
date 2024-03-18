@@ -17,17 +17,28 @@ type PetFormProps = {
 };
 
 const PetForm = ({ actionType, onFormSubmission }: PetFormProps) => {
-  const { handleUpdatePet, selectedPet } = usePetContext();
+  const { selectedPet } = usePetContext();
 
   return (
     <form
       action={async (formData: FormData) => {
-        const error = await actions.addPet(formData);
-        if (error) {
-          toast.warning(error.message);
-          return;
+        if (actionType === 'add') {
+          const error = await actions.addPet(formData);
+          if (error) {
+            toast.warning(error.message);
+            return;
+          }
+          toast.success('Pet added successfully');
         }
-        toast.success('Pet added successfully');
+        if (actionType === 'edit') {
+          const error = await actions.editPet(selectedPet!.id, formData);
+          if (error) {
+            toast.warning(error.message);
+            return;
+          }
+          toast.success('Pet updated successfully');
+        }
+
         onFormSubmission();
       }}
       className='flex flex-col'
