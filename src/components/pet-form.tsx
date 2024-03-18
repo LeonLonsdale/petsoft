@@ -17,7 +17,13 @@ const PetForm = ({ actionType, onFormSubmission }: PetFormProps) => {
   const { handleUpdatePet, selectedPet } = usePetContext();
 
   return (
-    <form action={actions.addPet} className='flex flex-col'>
+    <form
+      action={async (formData: FormData) => {
+        actions.addPet(formData);
+        onFormSubmission();
+      }}
+      className='flex flex-col'
+    >
       <fieldset className='space-y-3'>
         <div className='space-y-1'>
           <Label htmlFor='name'>Name</Label>
