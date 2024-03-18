@@ -8,6 +8,8 @@ import { usePetContext } from '@/contexts/pet-context-provider';
 import { Pet } from '@/lib/types';
 import * as actions from '@/actions';
 import PetFormButton from './pet-form-btn';
+import { Toaster } from './ui/sonner';
+import { toast } from 'sonner';
 
 type PetFormProps = {
   actionType: 'add' | 'edit';
@@ -20,7 +22,12 @@ const PetForm = ({ actionType, onFormSubmission }: PetFormProps) => {
   return (
     <form
       action={async (formData: FormData) => {
-        await actions.addPet(formData);
+        const error = await actions.addPet(formData);
+        if (error) {
+          toast.warning(error.message);
+          return;
+        }
+        toast.success('Pet added successfully');
         onFormSubmission();
       }}
       className='flex flex-col'
