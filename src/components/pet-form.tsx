@@ -7,6 +7,7 @@ import { Button } from './ui/button';
 import { usePetContext } from '@/contexts/pet-context-provider';
 import { Pet } from '@/lib/types';
 import * as actions from '@/actions';
+import PetFormButton from './pet-form-btn';
 
 type PetFormProps = {
   actionType: 'add' | 'edit';
@@ -19,7 +20,7 @@ const PetForm = ({ actionType, onFormSubmission }: PetFormProps) => {
   return (
     <form
       action={async (formData: FormData) => {
-        actions.addPet(formData);
+        await actions.addPet(formData);
         onFormSubmission();
       }}
       className='flex flex-col'
@@ -74,9 +75,7 @@ const PetForm = ({ actionType, onFormSubmission }: PetFormProps) => {
           />
         </div>
       </fieldset>
-      <Button type='submit' className='mt-5 self-end'>
-        {actionType === 'add' ? 'Submit' : 'Update'}
-      </Button>
+      <PetFormButton actionType={actionType} />
     </form>
   );
 };
