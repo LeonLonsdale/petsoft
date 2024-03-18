@@ -1,12 +1,12 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "@/styles/globals.css";
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import '@/styles/globals.css';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: "PetSoft - Doggy Daycare Software",
-  description: "Create your doggy daycare business with PetSoft",
+  title: 'PetSoft - Doggy Daycare Software',
+  description: 'Create your doggy daycare business with PetSoft',
 };
 
 export default function RootLayout({
@@ -15,9 +15,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang='en'>
       <body
-        className={`${inter.className} text-sm text-zinc-900 bg-[#E5E8EC] min-h-screen`}
+        className={`${inter.className} min-h-screen bg-[#E5E8EC] text-sm text-zinc-900`}
       >
         {children}
       </body>

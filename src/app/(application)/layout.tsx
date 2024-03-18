@@ -11,7 +11,6 @@ type LayoutProps = {
 
 const Layout = async ({ children }: LayoutProps) => {
   // get pet data
-
   const pets = await prisma.pet.findMany();
 
   return (

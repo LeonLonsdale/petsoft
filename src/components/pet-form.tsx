@@ -6,6 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from './ui/button';
 import { usePetContext } from '@/contexts/pet-context-provider';
 import { Pet } from '@/lib/types';
+import * as actions from '@/actions';
 
 type PetFormProps = {
   actionType: 'add' | 'edit';
@@ -13,32 +14,10 @@ type PetFormProps = {
 };
 
 const PetForm = ({ actionType, onFormSubmission }: PetFormProps) => {
-  const { handleAddPet, handleUpdatePet, selectedPet } = usePetContext();
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const formData = new FormData(e.currentTarget);
-    // const pet = Object.fromEntries(formData.entries()); // typing issues
-    const pet = {
-      name: formData.get('name') as string,
-      ownerName: formData.get('ownerName') as string,
-      imageUrl:
-        (formData.get('imageUrl') as string) ||
-        'https://bytegrad.com/course-assets/react-nextjs/pet-placeholder.png',
-      age: +(formData.get('age') as string),
-      notes: formData.get('notes') as string,
-    };
-
-    actionType === 'add'
-      ? handleAddPet(pet)
-      : handleUpdatePet(selectedPet!.id, pet);
-
-    onFormSubmission();
-  };
+  const { handleUpdatePet, selectedPet } = usePetContext();
 
   return (
-    <form onSubmit={handleSubmit} className='flex flex-col'>
+    <form action={actions.addPet} className='flex flex-col'>
       <fieldset className='space-y-3'>
         <div className='space-y-1'>
           <Label htmlFor='name'>Name</Label>
@@ -97,3 +76,27 @@ const PetForm = ({ actionType, onFormSubmission }: PetFormProps) => {
 };
 
 export default PetForm;
+
+/*
+const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+
+  const formData = new FormData(e.currentTarget);
+  // const pet = Object.fromEntries(formData.entries()); // typing issues
+  const pet = {
+    name: formData.get('name') as string,
+    ownerName: formData.get('ownerName') as string,
+    imageUrl:
+      (formData.get('imageUrl') as string) ||
+      'https://bytegrad.com/course-assets/react-nextjs/pet-placeholder.png',
+    age: +(formData.get('age') as string),
+    notes: formData.get('notes') as string,
+  };
+
+  actionType === 'add'
+    ? handleAddPet(pet)
+    : handleUpdatePet(selectedPet!.id, pet);
+
+  onFormSubmission();
+};
+*/

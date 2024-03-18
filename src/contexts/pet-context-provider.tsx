@@ -2,12 +2,13 @@
 
 import { Pet } from '@/lib/types';
 import { createContext, useContext, useState } from 'react';
+import * as actions from '@/actions';
 
 type TPetContext = {
   pets: Pet[];
   selectedPetId: string | null;
   handleSelectPet: (id: string) => void;
-  handleAddPet: (pet: Omit<Pet, 'id'>) => void;
+  // handleAddPet: (pet: Omit<Pet, 'id'>) => void;
   handleCheckout: (petId: string) => void;
   handleUpdatePet: (petId: string, updatedPet: Omit<Pet, 'id'>) => void;
   selectedPet: Pet | undefined;
@@ -21,9 +22,12 @@ type TPetContextProviderProps = {
 
 const PetContext = createContext<TPetContext | null>(null);
 
-const PetContextProvider = ({ children, data }: TPetContextProviderProps) => {
+const PetContextProvider = ({
+  children,
+  data: pets,
+}: TPetContextProviderProps) => {
   // state
-  const [pets, setPets] = useState(data);
+  // const [pets, setPets] = useState(data); - no longer needed
   const [selectedPetId, setSelectedPetId] = useState<string | null>(null);
 
   // derived state
@@ -32,14 +36,6 @@ const PetContextProvider = ({ children, data }: TPetContextProviderProps) => {
 
   // handlers
   const handleSelectPet = (id: string) => setSelectedPetId(id);
-  const handleAddPet = (newPet: Omit<Pet, 'id'>) =>
-    setPets((prev) => [
-      ...prev,
-      {
-        ...newPet,
-        id: Date.now().toString(),
-      },
-    ]);
   const handleCheckout = (petId: string) => {
     setPets((prev) => prev.filter((pet) => pet.id !== petId));
     setSelectedPetId(null);
@@ -57,7 +53,7 @@ const PetContextProvider = ({ children, data }: TPetContextProviderProps) => {
         pets,
         selectedPetId,
         handleSelectPet,
-        handleAddPet,
+        // handleAddPet,
         handleCheckout,
         handleUpdatePet,
         selectedPet,
@@ -79,3 +75,19 @@ const usePetContext = () => {
 };
 
 export { PetContextProvider, usePetContext };
+
+/*
+const handleAddPet = (newPet: Omit<Pet, 'id'>) =>
+setPets((prev) => [
+  ...prev,
+  {
+    ...newPet,
+    id: Date.now().toString(),
+  },
+]);
+*/
+
+/* 
+const handleAddPet = async (newPet: Omit<Pet, 'id'>) =>
+ await actions.addPet(newPet);
+*/
