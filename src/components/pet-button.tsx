@@ -16,14 +16,20 @@ type PetButtonProps = {
   actionType: 'add' | 'edit' | 'checkout';
   children?: React.ReactNode;
   onClick?: () => void;
+  disabled?: boolean;
 };
 
-const PetButton = ({ actionType, children, onClick }: PetButtonProps) => {
+const PetButton = ({
+  actionType,
+  children,
+  onClick,
+  disabled = false,
+}: PetButtonProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   if (actionType === 'checkout') {
     return (
-      <Button variant='secondary' onClick={onClick}>
+      <Button variant='secondary' onClick={onClick} disabled={disabled}>
         {children}
       </Button>
     );
