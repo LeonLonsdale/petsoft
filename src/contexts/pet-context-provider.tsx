@@ -31,8 +31,27 @@ const PetContextProvider = ({
   const [selectedPetId, setSelectedPetId] = useState<string | null>(null);
   const [optimisticPets, setOptimisticPets] = useOptimistic(
     pets,
-    (state, newPet) => [...state, { ...newPet, id: Math.random().toString() }],
+    optimisticReducer,
   );
+
+  function optimisticReducer(
+    state: Pet[],
+    { action, payload }: { action: string; payload: any },
+  ) {
+    switch (action) {
+      case 'add':
+        return [...state, { ...payload, id: Date.now().toString() }];
+      case 'edit':
+        return state.map((pet) =>
+          pet.id === payload.id ? { ...pet, ...payload.petData } : pet,
+        );
+      case 'delete':
+        return state.filter((pet) => pet.id !== payload);
+      default:
+        return state;
+    }
+  }
+
   // derived state
   const selectedPet = optimisticPets.find((pet) => pet.id === selectedPetId);
   const numberOfPets = optimisticPets.length;
@@ -41,24 +60,33 @@ const PetContextProvider = ({
   const handleSelectPet = (id: string) => setSelectedPetId(id);
 
   const handleAddPet = async (petData: Omit<Pet, 'id'>) => {
-    setOptimisticPets(petData);
+    setOptimisticPets({ action: 'add', payload: petData });
     const error = await actions.addPet(petData);
     if (error) {
       displayError(error);
       return;
     }
+    toast.success('Pet added successfully');
   };
 
   const handleUpdatePet = async (petId: string, petData: Omit<Pet, 'id'>) => {
+    setOptimisticPets({ action: 'edit', payload: { id: petId, petData } });
     const error = await actions.editPet(petId, petData);
     if (error) {
       displayError(error);
       return;
     }
+    toast.success('Pet updated successfully');
   };
 
   const handleCheckoutPet = async (petId: string) => {
-    await actions.deletePet(petId);
+    setOptimisticPets({ action: 'delete', payload: petId });
+    const error = await actions.deletePet(petId);
+    if (error) {
+      displayError(error);
+      return;
+    }
+    toast.success('Pet removed successfully');
     setSelectedPetId(null);
   };
 

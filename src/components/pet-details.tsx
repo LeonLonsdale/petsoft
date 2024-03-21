@@ -5,6 +5,7 @@ import { Pet } from '@/lib/types';
 import Image from 'next/image';
 import PetButton from './pet-button';
 import { toast } from 'sonner';
+import { use, useTransition } from 'react';
 
 const PetDetails = () => {
   const { selectedPet } = usePetContext();
@@ -30,6 +31,8 @@ type PetDetailsPartProps = {
 
 const TopBar = ({ pet }: PetDetailsPartProps) => {
   const { handleCheckoutPet } = usePetContext();
+  const [isPending, startTransition] = useTransition();
+
   return (
     <div className='flex items-center border-b border-light bg-white px-8 py-5'>
       <Image
@@ -45,10 +48,11 @@ const TopBar = ({ pet }: PetDetailsPartProps) => {
         <PetButton actionType='edit'>Edit</PetButton>
         <PetButton
           actionType='checkout'
-          onClick={async () => {
-            handleCheckoutPet(pet.id);
-            toast.success('Pet removed successfully');
-          }}
+          onClick={() =>
+            startTransition(async () => {
+              handleCheckoutPet(pet.id);
+            })
+          }
         >
           Checkout
         </PetButton>
