@@ -17,29 +17,26 @@ type PetFormProps = {
 };
 
 const PetForm = ({ actionType, onFormSubmission }: PetFormProps) => {
-  const { selectedPet } = usePetContext();
+  const { selectedPet, handleAddPet, handleUpdatePet } = usePetContext();
 
   return (
     <form
       action={async (formData: FormData) => {
-        if (actionType === 'add') {
-          const error = await actions.addPet(formData);
-          if (error) {
-            toast.warning(error.message);
-            return;
-          }
-          toast.success('Pet added successfully');
-        }
-        if (actionType === 'edit') {
-          const error = await actions.editPet(selectedPet!.id, formData);
-          if (error) {
-            toast.warning(error.message);
-            return;
-          }
-          toast.success('Pet updated successfully');
-        }
-
         onFormSubmission();
+
+        const petData = {
+          name: formData.get('name') as string,
+          ownerName: formData.get('ownerName') as string,
+          imageUrl:
+            (formData.get('imageUrl') as string) ||
+            'https://bytegrad.com/course-assets/react-nextjs/pet-placeholder.png',
+          age: +(formData.get('age') as string),
+          notes: formData.get('notes') as string,
+        };
+
+        if (actionType === 'add') handleAddPet(petData);
+
+        if (actionType === 'edit') handleUpdatePet(selectedPet!.id, petData);
       }}
       className='flex flex-col'
     >
