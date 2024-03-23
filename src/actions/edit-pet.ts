@@ -2,8 +2,9 @@
 
 import prisma from '@/lib/db';
 import { revalidatePath } from 'next/cache';
+import type { PetWithoutDBFields, PetID } from '@/lib/types';
 
-export const editPet = async (petId: string, petData) => {
+export const editPet = async (petId: PetID, petData: PetWithoutDBFields) => {
   try {
     await prisma.pet.update({
       where: { id: petId },

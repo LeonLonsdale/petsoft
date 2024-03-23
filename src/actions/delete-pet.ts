@@ -2,8 +2,9 @@
 
 import prisma from '@/lib/db';
 import { revalidatePath } from 'next/cache';
+import type { PetID } from '@/lib/types';
 
-export const deletePet = async (petId: string) => {
+export const deletePet = async (petId: PetID) => {
   try {
     await prisma.pet.delete({
       where: { id: petId },
