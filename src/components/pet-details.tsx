@@ -1,10 +1,10 @@
 'use client';
 
 import { usePetContext } from '@/contexts/pet-context-provider';
-import { Pet } from '@/lib/types';
 import Image from 'next/image';
 import PetButton from './pet-button';
-import { use, useTransition } from 'react';
+import { useTransition } from 'react';
+import { Pet } from '@prisma/client';
 
 const PetDetails = () => {
   const { selectedPet } = usePetContext();
@@ -30,7 +30,7 @@ type PetDetailsPartProps = {
 
 const TopBar = ({ pet }: PetDetailsPartProps) => {
   const { handleCheckoutPet } = usePetContext();
-  const [startTransition] = useTransition();
+  const [_, startTransition] = useTransition();
 
   return (
     <div className='flex items-center border-b border-light bg-white px-8 py-5'>
