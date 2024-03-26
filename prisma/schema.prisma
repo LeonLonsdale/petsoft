@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Pet {
-  id        String   @id @default(uuid())
+  id        String   @id @default(cuid())
   name      String
   ownerName String
   imageUrl  String

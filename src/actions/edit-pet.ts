@@ -2,13 +2,23 @@
 
 import prisma from '@/lib/db';
 import { revalidatePath } from 'next/cache';
-import type { PetWithoutDBFields, PetID } from '@/lib/types';
+import { petFormSchema, petIdSchema } from '@/lib/validations';
 
-export const editPet = async (petId: PetID, petData: PetWithoutDBFields) => {
+export const editPet = async (petId: unknown, petData: unknown) => {
+  const validatedPetId = petIdSchema.safeParse(petId);
+
+  const validatedPet = petFormSchema.safeParse(petData);
+
+  if (!validatedPetId.success || !validatedPet.success) {
+    return {
+      message: 'Invalid pet data',
+    };
+  }
+
   try {
     await prisma.pet.update({
-      where: { id: petId },
-      data: petData,
+      where: { id: validatedPetId.data },
+      data: validatedPet.data,
     });
   } catch (error) {
     return {
