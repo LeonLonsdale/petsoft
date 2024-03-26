@@ -3,11 +3,20 @@
 import prisma from '@/lib/db';
 import { revalidatePath } from 'next/cache';
 import type { PetID } from '@/lib/types';
+import { petIdSchema } from '@/lib/validations';
 
-export const deletePet = async (petId: PetID) => {
+export const deletePet = async (petId: unknown) => {
+  const validatedPetId = petIdSchema.safeParse(petId);
+
+  if (!validatedPetId.success) {
+    return {
+      message: 'Invalid pet id.',
+    };
+  }
+
   try {
     await prisma.pet.delete({
-      where: { id: petId },
+      where: { id: validatedPetId.data },
     });
   } catch (error) {
     return {
