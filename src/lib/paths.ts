@@ -8,11 +8,11 @@ export const paths = {
   app: [
     {
       label: `Dashboard`,
-      path: () => `/app/dashboard`,
+      path: () => `/dashboard`,
     },
     {
       label: `Account`,
-      path: () => `/app/account`,
+      path: () => `/account`,
     },
   ],
   // auth
