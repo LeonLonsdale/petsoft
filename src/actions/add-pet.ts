@@ -1,12 +1,12 @@
 'use server';
 
-import type { PetWithoutDBFields } from '@/lib/types';
 import prisma from '@/lib/db';
 import { revalidatePath } from 'next/cache';
 import { petFormSchema } from '@/lib/validations';
 
-export const addPet = async (petData: PetWithoutDBFields) => {
+export const addPet = async (petData: unknown) => {
   const validatedPetData = petFormSchema.safeParse(petData);
+
   if (!validatedPetData.success) {
     return {
       message: validatedPetData.error.errors[0].message,
