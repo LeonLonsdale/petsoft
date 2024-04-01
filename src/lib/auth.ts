@@ -11,27 +11,30 @@ const config = {
   providers: [
     Credentials({
       async authorize(credentials) {
-        // runs on every login attempt.
+        // extract credentials from arguments (form data or similar)
         const { email, password } = credentials;
-        // does the user exist in the db?
+        // check if the user exists
         const user = await prisma.user.findUnique({ where: { email } });
 
+        // handle no user
         if (!user) {
           console.log('no user found');
           return null;
         }
 
-        // const match = await bcrypt.compare(password, user.hashedPassword);
+        // check if the password is correct
         const passwordsMatch = await bcrypt.compare(
           password,
           user.hashedPassword,
         );
 
+        // handle invalid password
         if (!passwordsMatch) {
           console.log('Invalid credentials');
           return null;
         }
 
+        // return the user object if everything is correct
         console.log('Logged in');
         return user;
       },
@@ -39,15 +42,16 @@ const config = {
   ],
   callbacks: {
     // runs on every request with middleware
-    authorized: ({ request }) => {
+    authorized: ({ auth, request }) => {
       const isAccessingApp = request.nextUrl.pathname.includes('/app');
-      if (isAccessingApp) {
+      const isLogged = Boolean(auth?.user);
+      if (isAccessingApp && !isLogged) {
         return false;
-      } else {
-        return true;
       }
+
+      return true;
     },
   },
 } satisfies NextAuthConfig;
 
-export const { auth, signIn } = NextAuth(config);
+export const { auth, signIn, signOut } = NextAuth(config);
