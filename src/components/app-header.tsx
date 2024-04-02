@@ -10,7 +10,7 @@ const AppHeader = () => {
   const { app } = paths;
   const activePathname = usePathname();
 
-  const navLinks = app.map((link) => (
+  const navLinks = Object.values(app).map((link) => (
     <li key={link.label}>
       <Link
         className={cn(

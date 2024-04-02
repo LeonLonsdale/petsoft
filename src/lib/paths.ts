@@ -5,16 +5,16 @@ export const paths = {
     path: () => `/`,
   },
   // protected / app
-  app: [
-    {
+  app: {
+    dashboard: {
       label: `Dashboard`,
       path: () => `/app/dashboard`,
     },
-    {
+    account: {
       label: `Account`,
       path: () => `/app/account`,
     },
-  ],
+  },
   // auth
   signup: {
     label: `Sign up`,
