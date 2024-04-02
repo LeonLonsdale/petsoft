@@ -35,7 +35,6 @@ const config = {
         }
 
         // return the user object if everything is correct
-        console.log('Logged in');
         return user;
       },
     }),
@@ -45,7 +44,7 @@ const config = {
     authorized: ({ auth, request }) => {
       const isAccessingApp = request.nextUrl.pathname.includes('/app');
       const isLogged = Boolean(auth?.user);
-      if (isAccessingApp && !isLogged) {
+      if (!isLogged && isAccessingApp) {
         return false;
       }
 
@@ -54,7 +53,9 @@ const config = {
       }
 
       if (isLogged && !isAccessingApp) {
-        return Response.redirect(new URL('/app/dashboard', request.nextUrl));
+        return Response.redirect(
+          new URL(paths.app.dashboard.path(), request.nextUrl),
+        );
       }
 
       if (!isLogged && !isAccessingApp) {
@@ -62,6 +63,18 @@ const config = {
       }
 
       return false;
+    },
+    jwt: ({ token, user }) => {
+      // add the user id to the token
+      if (user) token.userId = user.id;
+      return token;
+    },
+    session: ({ session, token }) => {
+      if (session.user) {
+        // add the user id to the session - need to access the id to retrieve pets
+        session.user.id = token.userId;
+      }
+      return session;
     },
   },
 } satisfies NextAuthConfig;
