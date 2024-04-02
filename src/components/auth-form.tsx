@@ -10,7 +10,10 @@ type AuthFormProps = {
 
 const AuthForm = ({ type }: AuthFormProps) => {
   return (
-    <form action={actions.login} className='space-y-3'>
+    <form
+      action={type === 'login' ? actions.login : actions.register}
+      className='space-y-3'
+    >
       <fieldset className='space-y-1'>
         <Label htmlFor='email'>Email</Label>
         <Input name='email' type='email' id='email' />
