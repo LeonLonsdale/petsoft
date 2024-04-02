@@ -29,12 +29,12 @@ const PetForm = ({ actionType, onFormSubmission }: PetFormProps) => {
     defaultValues:
       actionType === 'edit'
         ? {
-            name: selectedPet?.name,
-            ownerName: selectedPet?.ownerName,
-            imageUrl: selectedPet?.imageUrl,
-            age: selectedPet?.age,
-            notes: selectedPet?.notes,
-          }
+          name: selectedPet?.name,
+          ownerName: selectedPet?.ownerName,
+          imageUrl: selectedPet?.imageUrl,
+          age: selectedPet?.age,
+          notes: selectedPet?.notes,
+        }
         : undefined,
   });
 
@@ -45,16 +45,6 @@ const PetForm = ({ actionType, onFormSubmission }: PetFormProps) => {
         if (!result) return;
 
         onFormSubmission();
-
-        //const petData = {
-        //  name: formData.get('name') as string,
-        //  ownerName: formData.get('ownerName') as string,
-        //  imageUrl:
-        //    (formData.get('imageUrl') as string) ||
-        //    'https://bytegrad.com/course-assets/react-nextjs/pet-placeholder.png',
-        //  age: +(formData.get('age') as string),
-        //  notes: formData.get('notes') as string,
-        //};
 
         const petData: PetWithoutDBFields = getValues();
         petData.imageUrl = petData.imageUrl || DEFAULT_PET_IMAGE;
