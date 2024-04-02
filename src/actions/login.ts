@@ -1,7 +1,6 @@
 'use server';
 
 import { signIn } from '@/lib/auth';
-import { redirect } from 'next/navigation';
 
 export const login = async (formData: FormData) => {
   const authData = {
@@ -12,5 +11,4 @@ export const login = async (formData: FormData) => {
   // pass in the provider name first, then the data
   // lets the authjs authorize func know which provider type
   await signIn('credentials', authData);
-  redirect('/app/dashboard');
 };
