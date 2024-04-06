@@ -3,15 +3,12 @@
 import prisma from '@/lib/db';
 import { revalidatePath } from 'next/cache';
 import { petFormSchema, petIdSchema } from '@/lib/validations';
-import { auth } from '@/lib/auth'
-import { redirect } from 'next/navigation';
-import { paths } from '@/lib/paths';
+import { authCheck, getPetByPetId } from '@/lib/server-utils';
 
 export const editPet = async (petId: unknown, petData: unknown) => {
 
   // authentication check
-  const session = await auth();
-  if (!session?.user) redirect(paths.login.path())
+  const session = await authCheck()
 
   // validation  
   const validatedPetId = petIdSchema.safeParse(petId);
@@ -24,11 +21,7 @@ export const editPet = async (petId: unknown, petData: unknown) => {
 
 
   // authorisation check
-  const pet = await prisma.pet.findUnique({
-    where: {
-      id: validatedPetId.data,
-    }
-  })
+  const pet = await getPetByPetId(validatedPetId.data);
 
   if (!pet) return { message: 'Pet not found' }
 

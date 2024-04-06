@@ -1,14 +1,10 @@
 import ContentBlock from '@/components/content-block';
 import H1 from '@/components/h1';
 import LogoutButton from '@/components/logout-button';
-import { auth } from '@/lib/auth';
-import { redirect } from 'next/navigation';
+import { authCheck } from '@/lib/server-utils';
 
 const Page = async () => {
-  const session = await auth();
-
-  if (!session?.user) redirect('/login');
-
+  const session = await authCheck();
   return (
     <main>
       <H1 className='my-8 text-white'>Your Account</H1>

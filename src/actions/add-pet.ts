@@ -6,11 +6,10 @@ import { petFormSchema } from '@/lib/validations';
 import { auth } from '@/lib/auth';
 import { paths } from '@/lib/paths';
 import { redirect } from 'next/navigation';
+import { authCheck } from '@/lib/server-utils';
 
 export const addPet = async (petData: unknown) => {
-  const session = await auth();
-  if (!session?.user) redirect(paths.login.path());
-
+  const session = await authCheck();
   const validatedPetData = petFormSchema.safeParse(petData);
 
   if (!validatedPetData.success) {
@@ -28,7 +27,7 @@ export const addPet = async (petData: unknown) => {
     });
   } catch (error) {
     return {
-      message: 'Something went wrong while adding the pet. Please try again.',
+     message: 'Something went wrong while adding the pet. Please try again.',
     };
   }
 

@@ -4,26 +4,15 @@ import BackgroundPattern from '@/components/background-pattern';
 import { Toaster } from '@/components/ui/sonner';
 import { PetContextProvider } from '@/contexts/pet-context-provider';
 import { SearchContextProvider } from '@/contexts/search-context-provider';
-import { auth } from '@/lib/auth';
-import prisma from '@/lib/db';
-import { paths } from '@/lib/paths';
-import { redirect } from 'next/navigation';
+import { authCheck, getPetsByUserId } from '@/lib/server-utils';
 
 type LayoutProps = {
   children: React.ReactNode;
 };
 
 const Layout = async ({ children }: LayoutProps) => {
-  const session = await auth();
-
-  if (!session?.user) {
-    redirect(paths.login.path());
-  }
-
-  // get pet data
-  const pets = await prisma.pet.findMany({
-    where: { userId: session.user.id },
-  });
+  const session = await authCheck();
+  const pets = await getPetsByUserId(session.user.id);
 
   return (
     <>
@@ -41,13 +30,3 @@ const Layout = async ({ children }: LayoutProps) => {
 };
 
 export default Layout;
-
-/*
-const response = await fetch(
-  'https://bytegrad.com/course-assets/projects/petsoft/api/pets',
-);
-if (!response.ok) {
-  throw new Error('Could not load pet information');
-}
-const data = await response.json();
-*/

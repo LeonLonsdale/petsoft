@@ -3,17 +3,10 @@
 import prisma from '@/lib/db';
 import { revalidatePath } from 'next/cache';
 import { petIdSchema } from '@/lib/validations';
-import { auth } from '@/lib/auth';
-import { paths } from '@/lib/paths';
-import { redirect } from 'next/navigation';
+import { authCheck, getPetByPetId } from '@/lib/server-utils';
 
 export const deletePet = async (petId: unknown) => {
-  const session = await auth();
-
-  if (!session?.user) {
-    redirect(paths.login.path());
-  }
-
+  const session = await authCheck();
   const validatedPetId = petIdSchema.safeParse(petId);
 
   if (!validatedPetId.success) {
@@ -22,10 +15,7 @@ export const deletePet = async (petId: unknown) => {
     };
   }
 
-  const pet = await prisma.pet.findUnique({
-    where: { id: validatedPetId.data },
-    select: { userId: true },
-  });
+  const pet = await getPetByPetId(validatedPetId.data)
 
   if (!pet) return { message: 'Pet not found' };
 
@@ -43,8 +33,3 @@ export const deletePet = async (petId: unknown) => {
 
   revalidatePath('/(application)', 'layout');
 };
-
-// const handleCheckout = (petId: string) => {
-//   setPets((prev) => prev.filter((pet) => pet.id !== petId));
-//   setSelectedPetId(null);
-// };
