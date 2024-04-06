@@ -1,14 +1,13 @@
 'use server';
 
 import { signIn } from '@/lib/auth';
+import { authSchema } from '@/lib/validations';
 
-export const login = async (formData: FormData) => {
-  const authData = {
-    email: formData.get('email') as string,
-    password: formData.get('password') as string,
-  };
+export const login = async (formData: unknown) => {
+  
+  if (!(formData instanceof FormData)) return { message: 'Invalid data' };
 
   // pass in the provider name first, then the data
   // lets the authjs authorize func know which provider type
-  await signIn('credentials', authData);
+  await signIn('credentials', formData);
 };

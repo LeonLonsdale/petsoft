@@ -16,11 +16,11 @@ const AuthForm = ({ type }: AuthFormProps) => {
     >
       <fieldset className='space-y-1'>
         <Label htmlFor='email'>Email</Label>
-        <Input name='email' type='email' id='email' />
+        <Input name='email' type='email' id='email' required maxLength={100}/>
       </fieldset>
       <fieldset className='space-y-1'>
         <Label htmlFor='password'>Password</Label>
-        <Input name='password' type='password' id='password' />
+        <Input name='password' type='password' id='password' required maxLength={100} />
       </fieldset>
       <Button type='submit'>{type === 'login' ? 'Login' : 'Sign Up'}</Button>
     </form>

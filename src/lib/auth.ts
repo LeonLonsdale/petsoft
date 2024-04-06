@@ -3,6 +3,7 @@ import { paths } from './paths';
 import Credentials from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
 import { getUserByEmail } from './server-utils';
+import { authSchema } from './validations';
 
 const config = {
   pages: {
@@ -11,8 +12,12 @@ const config = {
   providers: [
     Credentials({
       async authorize(credentials) {
+
+        const validatedFormData = authSchema.safeParse(credentials)
+        if (!validatedFormData.success) return null;
+      
         // extract credentials from arguments (form data or similar)
-        const { email, password } = credentials;
+        const { email, password } = validatedFormData.data;
         // check if the user exists
         const user = await getUserByEmail(email)
 
@@ -79,4 +84,4 @@ const config = {
   },
 } satisfies NextAuthConfig;
 
-export const { auth, signIn, signOut } = NextAuth(config);
+export const { auth, signIn, signOut, handlers: { GET, POST } } = NextAuth(config);
