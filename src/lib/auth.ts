@@ -72,7 +72,7 @@ const config = {
     session: ({ session, token }) => {
       if (session.user) {
         // add the user id to the session - need to access the id to retrieve pets
-        session.user.id = token.userId;
+       session.user.id = token.userId;
       }
       return session;
     },
