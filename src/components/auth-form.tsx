@@ -19,12 +19,12 @@ const AuthForm = ({ type }: AuthFormProps) => {
   const [loginErrorState, dispatchLogin] = useFormState(actions.login, undefined);
 
   useEffect(() => {
-      if (registerErrorState?.message) toast.error(registerErrorState?.message)
-  }, [registerErrorState ])
+    if (registerErrorState?.message) toast.error(registerErrorState?.message)
+  }, [registerErrorState])
 
   useEffect(() => {
-      if (loginErrorState?.message) toast.error(loginErrorState?.message) 
-  }, [loginErrorState]) 
+    if (loginErrorState?.message) toast.error(loginErrorState?.message)
+  }, [loginErrorState])
 
   return (
     <form
