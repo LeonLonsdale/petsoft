@@ -7,3 +7,6 @@ export { register } from './register';
 export { addPet } from './add-pet';
 export { editPet } from './edit-pet';
 export { deletePet } from './delete-pet';
+
+// payment actions
+export { createCheckoutSession } from './create-checkout-session';

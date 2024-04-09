@@ -24,4 +24,11 @@ export const paths = {
     label: `Log in`,
     path: () => `/login`,
   },
+  payments: {
+    label: 'Payments',
+    path: (param?: string) => {
+      if (param) return `/payments/${param}`;
+      return '/payments/';
+    },
+  },
 };

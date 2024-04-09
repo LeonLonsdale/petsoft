@@ -12,14 +12,13 @@ const config = {
   providers: [
     Credentials({
       async authorize(credentials) {
-
-        const validatedFormData = authSchema.safeParse(credentials)
+        const validatedFormData = authSchema.safeParse(credentials);
         if (!validatedFormData.success) return null;
-      
+
         // extract credentials from arguments (form data or similar)
         const { email, password } = validatedFormData.data;
         // check if the user exists
-        const user = await getUserByEmail(email)
+        const user = await getUserByEmail(email);
 
         // handle no user
         if (!user) {
@@ -58,9 +57,15 @@ const config = {
       }
 
       if (isLogged && !isAccessingApp) {
-        return Response.redirect(
-          new URL(paths.app.dashboard.path(), request.nextUrl),
-        );
+        if (
+          request.nextUrl.pathname.includes(paths.login.path()) ||
+          request.nextUrl.pathname.includes(paths.signup.path())
+        ) {
+          return Response.redirect(
+            new URL(paths.payments.path(), request.nextUrl),
+          );
+        }
+        return true;
       }
 
       if (!isLogged && !isAccessingApp) {
@@ -77,11 +82,16 @@ const config = {
     session: ({ session, token }) => {
       if (session.user) {
         // add the user id to the session - need to access the id to retrieve pets
-       session.user.id = token.userId;
+        session.user.id = token.userId;
       }
       return session;
     },
   },
 } satisfies NextAuthConfig;
 
-export const { auth, signIn, signOut, handlers: { GET, POST } } = NextAuth(config);
+export const {
+  auth,
+  signIn,
+  signOut,
+  handlers: { GET, POST },
+} = NextAuth(config);
