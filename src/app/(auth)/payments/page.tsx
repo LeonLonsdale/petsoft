@@ -33,8 +33,8 @@ const PaymentsPage = ({ searchParams }: PaymentsPageProps) => {
         <>
           <H1 className='text-red-700'>You cancelled your payment</H1>
           <p className='mx-2 text-center'>
-            We're very sorry you've decided not to join us. You can start again
-            whenever you're ready.
+            We are re very sorry you have decided not to join us. You can start
+            again whenever you are ready.
           </p>
         </>
       )}
