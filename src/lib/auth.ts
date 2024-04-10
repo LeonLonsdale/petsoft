@@ -52,14 +52,21 @@ const config = {
         return false;
       }
 
-      if (isLogged && isAccessingApp) {
+      if (isLogged && isAccessingApp && !auth?.user.hasAccess) {
+        return Response.redirect(
+          new URL(paths.payments.path(), request.nextUrl),
+        );
+      }
+
+      if (isLogged && isAccessingApp && auth?.user.hasAccess) {
         return true;
       }
 
       if (isLogged && !isAccessingApp) {
         if (
-          request.nextUrl.pathname.includes(paths.login.path()) ||
-          request.nextUrl.pathname.includes(paths.signup.path())
+          (request.nextUrl.pathname.includes(paths.login.path()) ||
+            request.nextUrl.pathname.includes(paths.signup.path())) &&
+          !auth?.user.hasAccess
         ) {
           return Response.redirect(
             new URL(paths.payments.path(), request.nextUrl),
@@ -76,13 +83,17 @@ const config = {
     },
     jwt: ({ token, user }) => {
       // add the user id to the token
-      if (user) token.userId = user.id;
+      if (user) {
+        token.userId = user.id;
+        token.hasAccess = user.hasAccess;
+      }
       return token;
     },
     session: ({ session, token }) => {
       if (session.user) {
         // add the user id to the session - need to access the id to retrieve pets
         session.user.id = token.userId;
+        session.user.hasAccess = token.hasAccess;
       }
       return session;
     },
