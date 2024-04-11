@@ -1,10 +1,9 @@
 'use server';
 
-import { signIn } from '@/lib/auth';
+import { signIn } from '@/lib/auth-no-edge';
 import { AuthError } from 'next-auth';
 
 export const login = async (_: unknown, formData: unknown) => {
-
   if (!(formData instanceof FormData)) return { message: 'Invalid data' };
 
   // pass in the provider name first, then the data
@@ -14,8 +13,10 @@ export const login = async (_: unknown, formData: unknown) => {
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
-        case 'CredentialsSignin': return { message: 'Invalid Credentials' }
-        default: return { message: 'Unable to sign in' }
+        case 'CredentialsSignin':
+          return { message: 'Invalid Credentials' };
+        default:
+          return { message: 'Unable to sign in' };
       }
     }
     // Next JS Redirect uses a thrown error.
