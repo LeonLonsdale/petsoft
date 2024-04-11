@@ -1,23 +1,14 @@
-// 'use client';
+'use client';
 
 import H1 from '@/components/h1';
 import MakePaymentButton from '@/components/make-payment-button';
-// import { useEffect } from 'react';
-// import { toast } from 'sonner';
+import PaymentCompleteButton from '@/components/payment-complete-button';
 
 type PaymentsPageProps = {
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
 const PaymentsPage = ({ searchParams }: PaymentsPageProps) => {
-  // useEffect(() => {
-  //   if (searchParams.success) {
-  //     setTimeout(() => {
-  //       toast.success('Successful');
-  //     }, 1000);
-  //   }
-  // }, [searchParams.success]);
-
   return (
     <main className='flex flex-col items-center space-y-10'>
       {!searchParams.success && !searchParams.cancelled && (
@@ -39,6 +30,7 @@ const PaymentsPage = ({ searchParams }: PaymentsPageProps) => {
         </>
       )}
       {!searchParams.success && <MakePaymentButton />}
+      {searchParams.success && <PaymentCompleteButton />}
     </main>
   );
 };

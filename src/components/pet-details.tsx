@@ -1,6 +1,6 @@
 'use client';
 
-import { usePetContext } from '@/contexts/pet-context-provider';
+import { usePetContext } from '@/hooks/pet-context-hook';
 import Image from 'next/image';
 import PetButton from './pet-button';
 import { useTransition } from 'react';

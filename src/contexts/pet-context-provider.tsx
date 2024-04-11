@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useOptimistic, useState } from 'react';
+import { createContext, useOptimistic, useState } from 'react';
 import * as actions from '@/actions';
 import { toast } from 'sonner';
 import { Pet } from '@prisma/client';
@@ -22,7 +22,7 @@ type TPetContextProviderProps = {
   data: Pet[];
 };
 
-const PetContext = createContext<TPetContext | null>(null);
+export const PetContext = createContext<TPetContext | null>(null);
 
 const PetContextProvider = ({
   children,
@@ -114,38 +114,4 @@ const PetContextProvider = ({
   );
 };
 
-const usePetContext = () => {
-  const value = useContext(PetContext);
-  if (!value)
-    throw new Error(
-      'You have used PetContext outside of its Provider. PetContext can only be used within a child of the PetContextProvider',
-    );
-  return value;
-};
-
-export { PetContextProvider, usePetContext };
-
-/*
-const handleAddPet = (newPet: Omit<Pet, 'id'>) =>
-setPets((prev) => [
-  ...prev,
-  {
-    ...newPet,
-    id: Date.now().toString(),
-  },
-]);
-
-const handleAddPet = async (newPet: Omit<Pet, 'id'>) =>
-await actions.addPet(newPet);
-
-const handleCheckout = (petId: string) => {
-  setPets((prev) => prev.filter((pet) => pet.id !== petId));
-  setSelectedPetId(null);
-};
-const handleUpdatePet = (petId: string, updatedPet: Omit<Pet, 'id'>) =>
-setPets((prev) =>
-prev.map((pet) =>
-pet.id === petId ? { id: petId, ...updatedPet } : pet,
-),
-);
-*/
+export { PetContextProvider };

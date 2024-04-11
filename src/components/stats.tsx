@@ -1,6 +1,6 @@
 'use client';
 
-import { usePetContext } from '@/contexts/pet-context-provider';
+import { usePetContext } from '@/hooks/pet-context-hook';
 
 const Stats = () => {
   const { numberOfPets } = usePetContext();

@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState } from 'react';
+import { createContext, useState } from 'react';
 
 type TSearchContext = {
   searchText: string | null;
@@ -11,7 +11,7 @@ type TSearchContextProviderProps = {
   children: React.ReactNode;
 };
 
-const SearchContext = createContext<TSearchContext | null>(null);
+export const SearchContext = createContext<TSearchContext | null>(null);
 
 const SearchContextProvider = ({ children }: TSearchContextProviderProps) => {
   // state
@@ -35,13 +35,4 @@ const SearchContextProvider = ({ children }: TSearchContextProviderProps) => {
   );
 };
 
-const useSearchContext = () => {
-  const value = useContext(SearchContext);
-  if (!value)
-    throw new Error(
-      'You have used SearchContext outside of its Provider. SearchContext can only be used within a child of the SearchContextProvider',
-    );
-  return value;
-};
-
-export { useSearchContext, SearchContextProvider };
+export { SearchContextProvider };

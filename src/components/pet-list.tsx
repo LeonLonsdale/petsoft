@@ -1,7 +1,7 @@
 'use client';
 
-import { usePetContext } from '@/contexts/pet-context-provider';
-import { useSearchContext } from '@/contexts/search-context-provider';
+import { usePetContext } from '@/hooks/pet-context-hook';
+import { useSearchContext } from '@/hooks/pet-search-context-hook';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
